@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_underscores
+// ignore_for_file: unnecessary_underscores, unused_catch_stack
 
 import 'package:exous/core/constants/app_images.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ class NavbarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('🔵 NavbarWidget build called');
+    
 
     return Container(
       width  : double.infinity,
@@ -45,7 +45,7 @@ class NavbarWidget extends StatelessWidget {
           GestureDetector(
             behavior: HitTestBehavior.opaque,  // ← ensures tap is detected
             onTap   : () {
-              print('🔴 Menu button tapped');
+              //print('🔴 Menu button tapped');
               _openDrawer(context);
             },
             child: _MenuIcon(),
@@ -57,18 +57,18 @@ class NavbarWidget extends StatelessWidget {
   }
 
   void _openDrawer(BuildContext context) {
-    print('🟡 _openDrawer called');
-    print('🟡 context mounted: ${context.mounted}');
+    //print('🟡 _openDrawer called');
+    //print('🟡 context mounted: ${context.mounted}');
 
     try {
-      print('🟢 Attempting Navigator push...');
+      //print('🟢 Attempting Navigator push...');
 
       Navigator.of(context, rootNavigator: true).push(
         PageRouteBuilder(
           fullscreenDialog  : true,
           opaque            : true,
           pageBuilder: (ctx, animation, secondaryAnimation) {
-            print('🟢 DrawerMenu pageBuilder called');
+            //print('🟢 DrawerMenu pageBuilder called');
             return const DrawerMenu();
           },
           transitionsBuilder: (ctx, animation, secondaryAnimation, child) {
@@ -87,11 +87,11 @@ class NavbarWidget extends StatelessWidget {
         ),
       );
 
-      print('🟢 Navigator push completed');
+      //print('🟢 Navigator push completed');
 
     } catch (e, stack) {
-      print('🔴 ERROR in _openDrawer: $e');
-      print('🔴 StackTrace: $stack');
+      //print('🔴 ERROR in _openDrawer: $e');
+      //print('🔴 StackTrace: $stack');
     }
   }
 }
@@ -153,7 +153,7 @@ class _CartIcon extends StatelessWidget {
 class _MenuIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('🔵 MenuIcon build called');
+    //print('🔵 MenuIcon build called');
     return Container(
       width : 39,
       height: 35.82,

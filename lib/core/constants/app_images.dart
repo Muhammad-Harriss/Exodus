@@ -10,6 +10,7 @@ class AppImages {
   static const String menuIcon        = '$_base/menu_icon.png';
 
   // ── Hero ──────────────────────────────────────────────
+  static const String heroMining          = '$_base/crypto_mining.png';
   static const String heroBg          = '$_base/backgroud_image.png';
   static const String exodusBlackLogo  = '$_base/black_logo.png';
   static const String exodusHeroLogo  = '$_base/white_logo.png';
@@ -26,6 +27,13 @@ class AppImages {
   static const String decentralChar   = '$_base/decentraland_char.png';
   static const String testGameChar    = '$_base/test_game_char.png';
   static const String roadmapBg       = '$_base/roadmap_image.png';
+  // ── Tiers ──────────────────────────────────────────────
+  static const String tier0     = '$_base/Tier_0.png';
+  static const String tier1     = '$_base/Tier_1.png';
+  static const String tier2     = '$_base/Tier_2.png';
+  static const String tier3     = '$_base/Tier_3.png';
+  static const String tier4     = '$_base/Tier_4.png';
+  static const String cloak     = '$_base/cloak.png';
 
   // ── Partners ──────────────────────────────────────────
   static const String partnerWaifumon = '$_base/waifumon.png';

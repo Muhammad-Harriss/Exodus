@@ -1,6 +1,8 @@
 import 'package:exous/core/constants/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../screens/mobile_app_screen.dart';
+import '../../screens/store_screen.dart';
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({super.key});
@@ -40,10 +42,11 @@ class DrawerMenu extends StatelessWidget {
 
                   const Spacer(),
 
-                  // Cart
+                  // ── Cart ─────────────────────────────
                   Stack(
                     clipBehavior: Clip.none,
                     children    : [
+
                       Container(
                         width : 39,
                         height: 35.82,
@@ -63,6 +66,7 @@ class DrawerMenu extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       Positioned(
                         top  : -6,
                         right: -6,
@@ -85,12 +89,13 @@ class DrawerMenu extends StatelessWidget {
                           ),
                         ),
                       ),
+
                     ],
                   ),
 
                   const SizedBox(width: 8),
 
-                  // Menu icon active — tap closes drawer
+                  // ── Menu icon active ──────────────────
                   GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
                     child: Container(
@@ -139,23 +144,37 @@ class DrawerMenu extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // ── Menu items ────────────────────────────
+            // ── Mobile app ────────────────────────────
             _MenuItem(
               text    : 'Mobile app',
               isActive: false,
               leftPad : 132.71,
+              onTap   : () {
+                Navigator.of(context).pop();
+                Navigator.of(
+                  context,
+                  rootNavigator: true,
+                ).push(
+                  MaterialPageRoute(
+                    builder: (_) => const MobileAppScreen(),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 30),
 
+            // ── Home ──────────────────────────────────
             _MenuItem(
               text    : 'Home',
               isActive: true,
               leftPad : 156.43,
+              onTap   : () => Navigator.of(context).pop(),
             ),
 
             const SizedBox(height: 30),
 
+            // ── News ──────────────────────────────────
             _MenuItem(
               text    : 'News',
               isActive: false,
@@ -164,14 +183,27 @@ class DrawerMenu extends StatelessWidget {
 
             const SizedBox(height: 30),
 
+            // ── Store ─────────────────────────────────
             _MenuItem(
               text    : 'Store',
               isActive: false,
               leftPad : 156.43,
+              onTap   : () {
+                Navigator.of(context).pop();
+                Navigator.of(
+                  context,
+                  rootNavigator: true,
+                ).push(
+                  MaterialPageRoute(
+                    builder: (_) => const StoreScreen(),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 30),
 
+            // ── Highscore ─────────────────────────────
             _MenuItem(
               text    : 'Highscore',
               isActive: false,
@@ -180,6 +212,7 @@ class DrawerMenu extends StatelessWidget {
 
             const SizedBox(height: 30),
 
+            // ── Play now ──────────────────────────────
             _MenuItem(
               text    : 'Play now',
               isActive: false,
@@ -229,16 +262,18 @@ class DrawerMenu extends StatelessWidget {
   }
 }
 
-// ── Menu item ───────────────────────────────────────────
+// ── Menu Item ───────────────────────────────────────────
 class _MenuItem extends StatelessWidget {
-  final String text;
-  final bool   isActive;
-  final double leftPad;
+  final String       text;
+  final bool         isActive;
+  final double       leftPad;
+  final VoidCallback? onTap;
 
   const _MenuItem({
     required this.text,
     required this.isActive,
     required this.leftPad,
+    this.onTap,
   });
 
   @override
@@ -246,7 +281,7 @@ class _MenuItem extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: leftPad),
       child  : GestureDetector(
-        onTap: () => Navigator.of(context).pop(),
+        onTap: onTap ?? () => Navigator.of(context).pop(),
         child: Text(
           text,
           style: GoogleFonts.montserrat(
