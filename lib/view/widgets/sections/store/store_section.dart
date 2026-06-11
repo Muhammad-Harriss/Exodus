@@ -1,108 +1,146 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/constants/app_images.dart';
+import '../../../../../controllers/cart_controller.dart';
 
 class StoreSection extends StatelessWidget {
   const StoreSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cartController = Get.find<CartController>();
+    final screenWidth    = MediaQuery.of(context).size.width;
 
-    // ── Screen: 375 x 791 ────────────────────────────
-    // Navbar height: 78
-    // Available content width: 375
+    // ── Card width: (375 - left - gap - right) / 2
+    // (375 - 16 - 10 - 16) / 2 = 166.5
+    final cardWidth = (screenWidth - 42) / 2;
 
     return Container(
-      width : 375,
+      width : screenWidth,
       color : const Color(0xFF080818),
       child : Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
 
           const SizedBox(height: 28),
 
           // ── "UPGRADE TIER" heading ────────────────────
-          // width: 188, height: 29
-          // top: 105.71 - 78 = 27.71 → 28
-          // left: 99.83
-          // font: Montserrat SemiBold 600, 23.86px
-          // color: #FFFFFF
-          const Padding(
-            padding: EdgeInsets.only(left: 99.83),
-            child  : SizedBox(
-              width : 188,
-              height: 29,
-              child : _UpgradeTierHeading(),
+          Text(
+            'UPGRADE TIER',
+            style: GoogleFonts.montserrat(
+              fontSize     : 24,
+              fontWeight   : FontWeight.w700,
+              color        : Colors.white,
+              letterSpacing: 1,
             ),
           ),
 
-          const SizedBox(height: 39),
+          const SizedBox(height: 24),
 
           // ── Tiers dropdown ────────────────────────────
-          // width: 168, height: 40
-          // top: 172.03 - 78 = 94.03
-          // left: 103
-          const Padding(
-            padding: EdgeInsets.only(left: 103),
-            child  : _TiersDropdown(),
+          Container(
+            width : 180,
+            height: 44,
+            decoration: BoxDecoration(
+              color       : const Color(0xFF3853A4),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children         : [
+                Text(
+                  'Tiers',
+                  style: GoogleFonts.montserrat(
+                    fontSize  : 18,
+                    fontWeight: FontWeight.w500,
+                    color     : Colors.white,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  color: Colors.white,
+                  size : 22,
+                ),
+              ],
+            ),
           ),
 
-          const SizedBox(height: 23),
+          const SizedBox(height: 24),
 
           // ── Row 1: Tier 4 + Tier 3 ───────────────────
-          // Screen width: 375
-          // Card width: 160.31
-          // Left card: left: 21
-          // Right card: left: 195.5 (21 + 160.31 + 14.19 gap)
-          // Total: 21 + 160.31 + 14.19 + 160.31 + 18.19 = 374 ✅
-          SizedBox(
-            width : 375,
-            height: 214.11,
-            child : Stack(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child  : Row(
               children: [
 
-                // Tier 4 — left: 21
-                const Positioned(
-                  left: 21,
-                  top : 0,
-                  child: _StoreCard(imageName: AppImages.tier4),
+                // Tier 4
+                _StoreCard(
+                  width      : cardWidth,
+                  imageName  : AppImages.tier4,
+                  title      : 'Tier 4 Upgrade',
+                  price      : 95,
+                  onAddToCart: () => cartController.addToCart(
+                    imageName: AppImages.tier4,
+                    title    : 'Tier 4 Upgrade',
+                    price    : 95,
+                  ),
                 ),
 
-                // Tier 3 — left: 195.5
-                const Positioned(
-                  left: 195.5,
-                  top : 0,
-                  child: _StoreCard(imageName: AppImages.tier3),
+                const SizedBox(width: 10),
+
+                // Tier 3
+                _StoreCard(
+                  width      : cardWidth,
+                  imageName  : AppImages.tier3,
+                  title      : 'Tier 3 Upgrade',
+                  price      : 95,
+                  onAddToCart: () => cartController.addToCart(
+                    imageName: AppImages.tier3,
+                    title    : 'Tier 3 Upgrade',
+                    price    : 95,
+                  ),
                 ),
 
               ],
             ),
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
           // ── Row 2: Tier 2 + Tier 1 ───────────────────
-          // top: 461.76 - 78 = 383.76
-          // Card 1 left: 22.34
-          // Card 2 left: 196.53 (22.34 + 160.31 + 13.88 gap)
-          SizedBox(
-            width : 375,
-            height: 214.11,
-            child : Stack(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child  : Row(
               children: [
 
-                // Tier 2 — left: 22.34
-                const Positioned(
-                  left: 22.34,
-                  top : 0,
-                  child: _StoreCard(imageName: AppImages.tier2),
+                // Tier 2
+                _StoreCard(
+                  width      : cardWidth,
+                  imageName  : AppImages.tier2,
+                  title      : 'Tier 2 Upgrade',
+                  price      : 95,
+                  onAddToCart: () => cartController.addToCart(
+                    imageName: AppImages.tier2,
+                    title    : 'Tier 2 Upgrade',
+                    price    : 95,
+                  ),
                 ),
 
-                // Tier 1 — left: 192.65
-                const Positioned(
-                  left: 192.65,
-                  top : 0,
-                  child: _StoreCard(imageName: AppImages.tier1),
+                const SizedBox(width: 10),
+
+                // Tier 1
+                _StoreCard(
+                  width      : cardWidth,
+                  imageName  : AppImages.tier1,
+                  title      : 'Tier 1 Upgrade',
+                  price      : 95,
+                  onAddToCart: () => cartController.addToCart(
+                    imageName: AppImages.tier1,
+                    title    : 'Tier 1 Upgrade',
+                    price    : 95,
+                  ),
                 ),
 
               ],
@@ -117,262 +155,174 @@ class StoreSection extends StatelessWidget {
   }
 }
 
-// ── Upgrade Tier Heading ────────────────────────────────
-class _UpgradeTierHeading extends StatelessWidget {
-  const _UpgradeTierHeading();
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      'UPGRADE TIER',
-      style: GoogleFonts.montserrat(
-        fontSize     : 23.86,
-        fontWeight   : FontWeight.w600,
-        color        : const Color(0xFFFFFFFF),
-        height       : 1.0,
-        letterSpacing: 0,
-      ),
-    );
-  }
-}
-
-// ── Tiers Dropdown ──────────────────────────────────────
-class _TiersDropdown extends StatelessWidget {
-  const _TiersDropdown();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      // width: 168, height: 40
-      // left: 103
-      width : 168,
-      height: 40,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin : Alignment.centerLeft,
-          end   : Alignment.centerRight,
-          colors: [
-            Color(0xFF3853A4),
-            Color(0xFF3853A4),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children         : [
-
-          // "Tiers" text
-          // width: 40, height: 20
-          // font: Montserrat Medium 500, 16.52px
-          // color: #FFFFFF
-          Text(
-            'Tiers',
-            style: GoogleFonts.montserrat(
-              fontSize  : 16.52,
-              fontWeight: FontWeight.w500,
-              color     : const Color(0xFFFFFFFF),
-              height    : 1.0,
-            ),
-          ),
-
-          const SizedBox(width: 8),
-
-          const Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: Colors.white,
-            size : 20,
-          ),
-
-        ],
-      ),
-    );
-  }
-}
-
 // ── Store Card ──────────────────────────────────────────
 class _StoreCard extends StatelessWidget {
-  final String imageName;
+  final double       width;
+  final String       imageName;
+  final String       title;
+  final double       price;
+  final VoidCallback onAddToCart;
 
-  const _StoreCard({required this.imageName});
+  const _StoreCard({
+    required this.width,
+    required this.imageName,
+    required this.title,
+    required this.price,
+    required this.onAddToCart,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 160.31, height: 214.11
-      // border-radius: 3.49
-      // border: 0.5px solid #575C5FCC
-      width : 160.31,
-      height: 214.11,
+      width : width,
       decoration: BoxDecoration(
         color       : const Color(0xFF0F0F1E),
-        borderRadius: BorderRadius.circular(3.49),
+        borderRadius: BorderRadius.circular(10),
         border      : Border.all(
           color: const Color(0xCC575C5F),
-          width: 0.5,
+          width: 0.8,
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children         : [
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical  : 14,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children         : [
 
-          const SizedBox(height: 9),
-
-          // ── Tier image ──────────────────────────────
-          // width: 74.70, height: 74.70
-          // top: 243.89 - 235 = 8.89 from card top
-          Image.asset(
-            imageName,
-            width : 74.70,
-            height: 74.70,
-            fit   : BoxFit.contain,
-          ),
-
-          const SizedBox(height: 7),
-
-          // ── Title ───────────────────────────────────
-          // width: 79, height: 13
-          // font: Montserrat SemiBold 600, 10.46px
-          // left: 62.33 - 21(card left) = 41.33 from card left
-          Text(
-            'Tier 4 upgrade',
-            textAlign: TextAlign.center,
-            style    : GoogleFonts.montserrat(
-              fontSize  : 10.46,
-              fontWeight: FontWeight.w600,
-              color     : Colors.white,
-              height    : 1.0,
+            // ── Tier image ────────────────────────────
+            Image.asset(
+              imageName,
+              width : width * 0.52,
+              height: width * 0.52,
+              fit   : BoxFit.contain,
             ),
-          ),
 
-          const SizedBox(height: 4),
+            const SizedBox(height: 10),
 
-          // ── Description ─────────────────────────────
-          // width: 121, height: 30
-          // font: Poppins Regular 400, 6.97px
-          // left: 41.42 - 21 = 20.42 from card left
-          SizedBox(
-            width: 121,
-            child: Text(
-              'Tier 4 upgrade gives features to all\nupgrade service as well as an\nall exclusive battle pass',
+            // ── Title ─────────────────────────────────
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style    : GoogleFonts.montserrat(
+                fontSize  : 13,
+                fontWeight: FontWeight.w700,
+                color     : Colors.white,
+                height    : 1.2,
+              ),
+            ),
+
+            const SizedBox(height: 6),
+
+            // ── Description ───────────────────────────
+            Text(
+              'Tier upgrade gives features to all upgrade service as well as an all exclusive battle pass',
               textAlign: TextAlign.center,
               style    : GoogleFonts.poppins(
-                fontSize  : 6.97,
+                fontSize  : 9,
                 fontWeight: FontWeight.w400,
-                color     : Colors.white70,
-                height    : 1.0,
+                color     : Colors.white60,
+                height    : 1.4,
               ),
             ),
-          ),
 
-          const SizedBox(height: 11),
+            const SizedBox(height: 10),
 
-          // ── Price row ───────────────────────────────
-          // $95: left:79.45 - 21 = 58.45 from card left
-          //      font: 9.9px SemiBold, #58CB11
-          // $150: left:104.21 - 21 = 83.21 from card left
-          //       font: 9.9px Medium, strikethrough, white54
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children         : [
+            // ── Price row ─────────────────────────────
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children         : [
 
-              Text(
-                '\$95',
-                style: GoogleFonts.montserrat(
-                  fontSize  : 9.9,
-                  fontWeight: FontWeight.w600,
-                  color     : const Color(0xFF58CB11),
-                  height    : 1.0,
+                Text(
+                  '\$${price.toStringAsFixed(0)}',
+                  style: GoogleFonts.montserrat(
+                    fontSize  : 13,
+                    fontWeight: FontWeight.w700,
+                    color     : const Color(0xFF58CB11),
+                  ),
                 ),
-              ),
 
-              const SizedBox(width: 6),
+                const SizedBox(width: 8),
 
-              Text(
-                '\$150',
-                style: GoogleFonts.montserrat(
-                  fontSize       : 9.9,
-                  fontWeight     : FontWeight.w500,
-                  color          : Colors.white54,
-                  height         : 1.0,
-                  decoration     : TextDecoration.lineThrough,
-                  decorationColor: Colors.white54,
+                Text(
+                  '\$150',
+                  style: GoogleFonts.montserrat(
+                    fontSize       : 13,
+                    fontWeight     : FontWeight.w500,
+                    color          : Colors.white38,
+                    decoration     : TextDecoration.lineThrough,
+                    decorationColor: Colors.white38,
+                  ),
                 ),
-              ),
 
-            ],
-          ),
+              ],
+            ),
 
-          const SizedBox(height: 10),
+            const SizedBox(height: 12),
 
-          // ── Button row ───────────────────────────────
-          // Buy now:
-          //   width: 57.27, height: 19.42
-          //   left: 43.91 - 21 = 22.91 from card left
-          //   border-radius: 3.56
-          //   bg: #3853A4
-          //   font: Montserrat SemiBold 600, 6.17px, #FFFFFF
-          // Add to cart:
-          //   width: 57.27, height: 19.42
-          //   left: 106.2 - 21 = 85.2 from card left
-          //   border: 0.5px #4463BF
-          //   font: Montserrat SemiBold 600, 6.17px, #4463BF
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children         : [
+            // ── Buttons row ───────────────────────────
+            Row(
+              children: [
 
-              // Buy now
-              Container(
-                width : 57.27,
-                height: 19.42,
-                decoration: BoxDecoration(
-                  color       : const Color(0xFF3853A4),
-                  borderRadius: BorderRadius.circular(3.56),
-                ),
-                child: Center(
-                  child: Text(
-                    'Buy now',
-                    style: GoogleFonts.montserrat(
-                      fontSize  : 6.17,
-                      fontWeight: FontWeight.w600,
-                      color     : Colors.white,
-                      height    : 1.0,
+                // Buy now button
+                Expanded(
+                  child: Container(
+                    height    : 30,
+                    decoration: BoxDecoration(
+                      color       : const Color(0xFF3853A4),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Buy now',
+                        style: GoogleFonts.montserrat(
+                          fontSize  : 10,
+                          fontWeight: FontWeight.w600,
+                          color     : Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              const SizedBox(width: 5),
+                const SizedBox(width: 6),
 
-              // Add to cart
-              Container(
-                width : 57.27,
-                height: 19.42,
-                decoration: BoxDecoration(
-                  color       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(3.56),
-                  border      : Border.all(
-                    color: const Color(0xFF4463BF),
-                    width: 0.5,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Add to cart',
-                    style: GoogleFonts.montserrat(
-                      fontSize  : 6.17,
-                      fontWeight: FontWeight.w600,
-                      color     : const Color(0xFF4463BF),
-                      height    : 1.0,
+                // Add to cart button
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap   : onAddToCart,
+                    child   : Container(
+                      height    : 30,
+                      decoration: BoxDecoration(
+                        color       : Colors.transparent,
+                        borderRadius: BorderRadius.circular(6),
+                        border      : Border.all(
+                          color: const Color(0xFF4463BF),
+                          width: 1,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Add to cart',
+                          style: GoogleFonts.montserrat(
+                            fontSize  : 10,
+                            fontWeight: FontWeight.w600,
+                            color     : const Color(0xFF4463BF),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-            ],
-          ),
+              ],
+            ),
 
-        ],
+          ],
+        ),
       ),
     );
   }
