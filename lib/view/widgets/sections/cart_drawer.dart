@@ -1,10 +1,12 @@
-// ignore_for_file: unnecessary_underscores
+// ignore_for_file: unnecessary_underscores, deprecated_member_use
 
+import 'package:exous/view/screens/buy_now_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../controllers/cart_controller.dart';
 import '../../../core/constants/app_images.dart';
+ 
 
 class CartDrawer extends StatelessWidget {
   const CartDrawer({super.key});
@@ -230,6 +232,7 @@ class CartDrawer extends StatelessWidget {
             // ── Footer ────────────────────────────────
             Obx(() => _CartFooter(
               totalPrice: controller.totalPrice,
+              isCartEmpty: controller.cartItems.isEmpty,
               onClose   : () => Navigator.of(context).pop(),
             )),
 
@@ -424,10 +427,12 @@ class _CartItemCard extends StatelessWidget {
 // ── Cart Footer ─────────────────────────────────────────
 class _CartFooter extends StatelessWidget {
   final double       totalPrice;
+  final bool         isCartEmpty;
   final VoidCallback onClose;
 
   const _CartFooter({
     required this.totalPrice,
+    required this.isCartEmpty,
     required this.onClose,
   });
 
@@ -455,18 +460,29 @@ class _CartFooter extends StatelessWidget {
           SizedBox(
             width : double.infinity,
             height: 48,
-            child : Container(
-              decoration: BoxDecoration(
-                color       : const Color(0xFF3853A4),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  'Checkout',
-                  style: GoogleFonts.montserrat(
-                    fontSize  : 18,
-                    fontWeight: FontWeight.w600,
-                    color     : Colors.white,
+            child : GestureDetector(
+              onTap: isCartEmpty 
+                ? null 
+                : () {
+                    // Close the drawer clean
+                    Navigator.of(context).pop();
+                    
+                    // Simple clean routing without strict parameters
+                    Get.to(() => const BuyNowScreen());
+                  },
+              child: Container(
+                decoration: BoxDecoration(
+                  color       : isCartEmpty ? Colors.grey.withOpacity(0.3) : const Color(0xFF3853A4),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    'Checkout',
+                    style: GoogleFonts.montserrat(
+                      fontSize  : 18,
+                      fontWeight: FontWeight.w600,
+                      color     : isCartEmpty ? Colors.white30 : Colors.white,
+                    ),
                   ),
                 ),
               ),

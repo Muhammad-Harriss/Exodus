@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,34 +6,30 @@ class CartItem {
   final String title;
   final double price;
   RxInt        quantity;
+  RxBool       isFavourite;
 
   CartItem({
     required this.imageName,
     required this.title,
     required this.price,
-    int initialQty = 1,
-  }) : quantity = initialQty.obs;
+    int  initialQty = 1,
+    bool initialFav = false,
+  }) : quantity    = initialQty.obs,
+       isFavourite = initialFav.obs;
 }
 
 class CartController extends GetxController {
 
-  // ── Cart items list ───────────────────────────────────
   final RxList<CartItem> cartItems = <CartItem>[].obs;
 
-  // ── Total item count ──────────────────────────────────
-  RxInt get totalItemCount {
-    final count = cartItems.fold(
-      0, (sum, item) => sum + item.quantity.value,
-    );
-    return count.obs;
-  }
+  int get totalItemCount => cartItems.fold(
+    0, (sum, item) => sum + item.quantity.value,
+  );
 
-  // ── Total price ───────────────────────────────────────
   double get totalPrice => cartItems.fold(
     0.0, (sum, item) => sum + (item.price * item.quantity.value),
   );
 
-  // ── Add item ──────────────────────────────────────────
   void addToCart({
     required String imageName,
     required String title,
@@ -44,7 +38,6 @@ class CartController extends GetxController {
     final index = cartItems.indexWhere(
       (item) => item.imageName == imageName,
     );
-
     if (index != -1) {
       cartItems[index].quantity.value++;
     } else {
@@ -54,10 +47,7 @@ class CartController extends GetxController {
         price    : price,
       ));
     }
-
     cartItems.refresh();
-
-    // ── Show snackbar confirmation ─────────────────────
     Get.snackbar(
       '🛒 Added to Cart',
       '$title has been added to your cart',
@@ -70,7 +60,6 @@ class CartController extends GetxController {
     );
   }
 
-  // ── Increment ─────────────────────────────────────────
   void increment(int index) {
     if (index < cartItems.length) {
       cartItems[index].quantity.value++;
@@ -78,7 +67,6 @@ class CartController extends GetxController {
     }
   }
 
-  // ── Decrement ─────────────────────────────────────────
   void decrement(int index) {
     if (index < cartItems.length) {
       if (cartItems[index].quantity.value > 1) {
@@ -90,10 +78,17 @@ class CartController extends GetxController {
     }
   }
 
-  // ── Remove ────────────────────────────────────────────
   void removeItem(int index) {
     if (index < cartItems.length) {
       cartItems.removeAt(index);
+      cartItems.refresh();
+    }
+  }
+
+  void toggleFavourite(int index) {
+    if (index < cartItems.length) {
+      cartItems[index].isFavourite.value =
+          !cartItems[index].isFavourite.value;
       cartItems.refresh();
     }
   }

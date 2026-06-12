@@ -1,3 +1,4 @@
+import 'package:exous/controllers/navigation_controller.dart';
 import 'package:exous/view/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -16,8 +17,9 @@ void main() {
     ),
   );
 
-  // ── Initialize CartController globally ────────────────
+  // ── Initialize Controllers globally ────────────────
   Get.put(CartController());
+  Get.put(NavigationController()); 
 
   runApp(
     DevicePreview(

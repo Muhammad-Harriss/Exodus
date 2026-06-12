@@ -1,14 +1,20 @@
+import 'package:exous/controllers/navigation_controller.dart';
 import 'package:exous/core/constants/app_images.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../screens/mobile_app_screen.dart';
 import '../../screens/store_screen.dart';
+import '../../screens/home_screen.dart'; 
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Find the global navigation controller instance
+    final navController = Get.find<NavigationController>();
+
     return Material(
       color: const Color(0xFF080818),
       child: SafeArea(
@@ -23,30 +29,25 @@ class DrawerMenu extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child  : Row(
                 children: [
-
                   Image.asset(
                     AppImages.exodusLogoText,
                     width : 108,
                     height: 23.09,
                     fit   : BoxFit.contain,
                   ),
-
                   const SizedBox(width: 10),
-
                   Image.asset(
                     AppImages.orangeCircle,
                     width : 22,
                     height: 22,
                     fit   : BoxFit.contain,
                   ),
-
                   const Spacer(),
 
                   // ── Cart ─────────────────────────────
                   Stack(
                     clipBehavior: Clip.none,
                     children    : [
-
                       Container(
                         width : 39,
                         height: 35.82,
@@ -66,7 +67,6 @@ class DrawerMenu extends StatelessWidget {
                           ),
                         ),
                       ),
-
                       Positioned(
                         top  : -6,
                         right: -6,
@@ -89,10 +89,8 @@ class DrawerMenu extends StatelessWidget {
                           ),
                         ),
                       ),
-
                     ],
                   ),
-
                   const SizedBox(width: 8),
 
                   // ── Menu icon active ──────────────────
@@ -121,7 +119,6 @@ class DrawerMenu extends StatelessWidget {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -141,84 +138,85 @@ class DrawerMenu extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 16),
 
-            // ── Mobile app ────────────────────────────
-            _MenuItem(
+            // ── Mobile app Tab ────────────────────────────
+            Obx(() => _MenuItem(
               text    : 'Mobile app',
-              isActive: false,
+              isActive: navController.currentTab.value == 'Mobile app',
               leftPad : 132.71,
               onTap   : () {
+                navController.changeTab('Mobile app');
                 Navigator.of(context).pop();
-                Navigator.of(
-                  context,
-                  rootNavigator: true,
-                ).push(
-                  MaterialPageRoute(
-                    builder: (_) => const MobileAppScreen(),
-                  ),
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(builder: (_) => const MobileAppScreen()),
                 );
               },
-            ),
-
+            )),
             const SizedBox(height: 30),
 
-            // ── Home ──────────────────────────────────
-            _MenuItem(
+            // ── Home Tab ──────────────────────────────────
+            Obx(() => _MenuItem(
               text    : 'Home',
-              isActive: true,
-              leftPad : 156.43,
-              onTap   : () => Navigator.of(context).pop(),
-            ),
-
-            const SizedBox(height: 30),
-
-            // ── News ──────────────────────────────────
-            _MenuItem(
-              text    : 'News',
-              isActive: false,
-              leftPad : 156.43,
-            ),
-
-            const SizedBox(height: 30),
-
-            // ── Store ─────────────────────────────────
-            _MenuItem(
-              text    : 'Store',
-              isActive: false,
+              isActive: navController.currentTab.value == 'Home',
               leftPad : 156.43,
               onTap   : () {
+                navController.changeTab('Home');
                 Navigator.of(context).pop();
-                Navigator.of(
-                  context,
-                  rootNavigator: true,
-                ).push(
-                  MaterialPageRoute(
-                    builder: (_) => const StoreScreen(),
-                  ),
+                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const HomeScreen()),
+                  (route) => false,
                 );
               },
-            ),
-
+            )),
             const SizedBox(height: 30),
 
-            // ── Highscore ─────────────────────────────
-            _MenuItem(
+            // ── News Tab ──────────────────────────────────
+            Obx(() => _MenuItem(
+              text    : 'News',
+              isActive: navController.currentTab.value == 'News',
+              leftPad : 156.43,
+              onTap   : () {
+                navController.changeTab('News');
+              },
+            )),
+            const SizedBox(height: 30),
+
+            // ── Store Tab ─────────────────────────────────
+            Obx(() => _MenuItem(
+              text    : 'Store',
+              isActive: navController.currentTab.value == 'Store',
+              leftPad : 156.43,
+              onTap   : () {
+                navController.changeTab('Store');
+                Navigator.of(context).pop();
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(builder: (_) => const StoreScreen()),
+                );
+              },
+            )),
+            const SizedBox(height: 30),
+
+            // ── Highscore Tab ─────────────────────────────
+            Obx(() => _MenuItem(
               text    : 'Highscore',
-              isActive: false,
+              isActive: navController.currentTab.value == 'Highscore',
               leftPad : 132.71,
-            ),
-
+              onTap   : () {
+                navController.changeTab('Highscore');
+              },
+            )),
             const SizedBox(height: 30),
 
-            // ── Play now ──────────────────────────────
-            _MenuItem(
+            // ── Play now Tab ──────────────────────────────
+            Obx(() => _MenuItem(
               text    : 'Play now',
-              isActive: false,
+              isActive: navController.currentTab.value == 'Play now',
               leftPad : 132.71,
-            ),
-
+              onTap   : () {
+                navController.changeTab('Play now');
+              },
+            )),
             const SizedBox(height: 60),
 
             // ── Joshua row ────────────────────────────
@@ -226,16 +224,13 @@ class DrawerMenu extends StatelessWidget {
               padding: const EdgeInsets.only(left: 94),
               child  : Row(
                 children: [
-
                   Image.asset(
                     AppImages.partnerjoshua,
                     width : 44,
                     height: 44,
                     fit   : BoxFit.contain,
                   ),
-
                   const SizedBox(width: 20),
-
                   SizedBox(
                     width : 116.46,
                     height: 25,
@@ -250,11 +245,9 @@ class DrawerMenu extends StatelessWidget {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
-
           ],
         ),
       ),
@@ -264,9 +257,9 @@ class DrawerMenu extends StatelessWidget {
 
 // ── Menu Item ───────────────────────────────────────────
 class _MenuItem extends StatelessWidget {
-  final String       text;
-  final bool         isActive;
-  final double       leftPad;
+  final String    text;
+  final bool      isActive;
+  final double    leftPad;
   final VoidCallback? onTap;
 
   const _MenuItem({
@@ -288,8 +281,8 @@ class _MenuItem extends StatelessWidget {
             fontSize     : 19.21,
             fontWeight   : isActive ? FontWeight.w700 : FontWeight.w500,
             color        : isActive
-                ? const Color(0xFF4463BF)
-                : const Color(0xFFFFFFFF),
+                ? const Color(0xFF4463BF) 
+                : const Color(0xFFFFFFFF), 
             height       : 1.0,
             letterSpacing: 0,
           ),
