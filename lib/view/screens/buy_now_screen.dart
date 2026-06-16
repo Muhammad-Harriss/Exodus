@@ -1,9 +1,11 @@
+import 'package:exous/view/screens/paymen_method_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/sections/navbar_widget.dart';
 import '../widgets/sections/buy_now/buy_now_section.dart';
 import '../../controllers/cart_controller.dart';
+
 
 class BuyNowScreen extends StatelessWidget {
   const BuyNowScreen({super.key});
@@ -38,20 +40,29 @@ class BuyNowScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Container(
-                    width: 144.77,
-                    height: 47.03,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF3853A4),
-                      borderRadius: BorderRadius.circular(9.53),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Checkout',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 16.25,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                  
+                  // ── Checkout Button with Navigation ──────────────────
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      // Navigate to the Payment Method Screen using GetX
+                      Get.to(() => const PaymentMethodScreen());
+                    },
+                    child: Container(
+                      width: 144.77,
+                      height: 47.03,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF3853A4),
+                        borderRadius: BorderRadius.circular(9.53),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Checkout',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 16.25,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
