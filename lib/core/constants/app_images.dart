@@ -23,6 +23,11 @@ class AppImages {
 
   // ── Sections ──────────────────────────────────────────
   static const String dus  = '$_base/dus.png';
+  static const String dawn  = '$_base/dawn.png';
+  static const String dawn1  = '$_base/dawn1.png';
+  static const String dawn2  = '$_base/dawn2.png';
+ 
+  static const String battle  = '$_base/battle.png';
   static const String decentralandbg   = '$_base/decentralandBg.png';
   static const String decentralChar   = '$_base/decentraland_char.png';
   static const String testGameChar    = '$_base/test_game_char.png';

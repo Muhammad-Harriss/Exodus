@@ -1,11 +1,12 @@
 import 'package:exous/controllers/navigation_controller.dart';
+import 'package:exous/controllers/auth_controller.dart';
 import 'package:exous/core/constants/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../screens/mobile_app_screen.dart';
 import '../../screens/store_screen.dart';
-import '../../screens/home_screen.dart'; 
+import '../../screens/home_screen.dart';
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({super.key});
@@ -13,7 +14,8 @@ class DrawerMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Find the global navigation controller instance
-    final navController = Get.find<NavigationController>();
+    final navController  = Get.find<NavigationController>();
+    final authController = Get.find<AuthController>();
 
     return Material(
       color: const Color(0xFF080818),
@@ -123,9 +125,11 @@ class DrawerMenu extends StatelessWidget {
               ),
             ),
 
+            const SizedBox(height: 16),
+
             // ── Close X button ────────────────────────
             Padding(
-              padding: const EdgeInsets.only(left: 20, top: 16),
+              padding: const EdgeInsets.only(left: 20),
               child  : GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
                 child: const Text(
@@ -138,116 +142,156 @@ class DrawerMenu extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
 
-            // ── Mobile app Tab ────────────────────────────
-            Obx(() => _MenuItem(
-              text    : 'Mobile app',
-              isActive: navController.currentTab.value == 'Mobile app',
-              leftPad : 132.71,
-              onTap   : () {
-                navController.changeTab('Mobile app');
-                Navigator.of(context).pop();
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(builder: (_) => const MobileAppScreen()),
-                );
-              },
-            )),
-            const SizedBox(height: 30),
+            const SizedBox(height: 24),
 
-            // ── Home Tab ──────────────────────────────────
-            Obx(() => _MenuItem(
-              text    : 'Home',
-              isActive: navController.currentTab.value == 'Home',
-              leftPad : 156.43,
-              onTap   : () {
-                navController.changeTab('Home');
-                Navigator.of(context).pop();
-                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const HomeScreen()),
-                  (route) => false,
-                );
-              },
-            )),
-            const SizedBox(height: 30),
+            // ── Menu items — all centered ──────────────
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children          : [
 
-            // ── News Tab ──────────────────────────────────
-            Obx(() => _MenuItem(
-              text    : 'News',
-              isActive: navController.currentTab.value == 'News',
-              leftPad : 156.43,
-              onTap   : () {
-                navController.changeTab('News');
-              },
-            )),
-            const SizedBox(height: 30),
+                    // ── Mobile app Tab ──────────────────
+                    Obx(() => _MenuItem(
+                      text    : 'Mobile app',
+                      isActive: navController.currentTab.value ==
+                          'Mobile app',
+                      onTap   : () {
+                        navController.changeTab('Mobile app');
+                        Navigator.of(context).pop();
+                        Navigator.of(
+                          context,
+                          rootNavigator: true,
+                        ).push(
+                          MaterialPageRoute(
+                            builder: (_) => const MobileAppScreen(),
+                          ),
+                        );
+                      },
+                    )),
+                    const SizedBox(height: 28),
 
-            // ── Store Tab ─────────────────────────────────
-            Obx(() => _MenuItem(
-              text    : 'Store',
-              isActive: navController.currentTab.value == 'Store',
-              leftPad : 156.43,
-              onTap   : () {
-                navController.changeTab('Store');
-                Navigator.of(context).pop();
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(builder: (_) => const StoreScreen()),
-                );
-              },
-            )),
-            const SizedBox(height: 30),
+                    // ── Home Tab ─────────────────────────
+                    Obx(() => _MenuItem(
+                      text    : 'Home',
+                      isActive: navController.currentTab.value == 'Home',
+                      onTap   : () {
+                        navController.changeTab('Home');
+                        Navigator.of(context).pop();
+                        Navigator.of(
+                          context,
+                          rootNavigator: true,
+                        ).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (_) => const HomeScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                    )),
+                    const SizedBox(height: 28),
 
-            // ── Highscore Tab ─────────────────────────────
-            Obx(() => _MenuItem(
-              text    : 'Highscore',
-              isActive: navController.currentTab.value == 'Highscore',
-              leftPad : 132.71,
-              onTap   : () {
-                navController.changeTab('Highscore');
-              },
-            )),
-            const SizedBox(height: 30),
+                    // ── News Tab ─────────────────────────
+                    Obx(() => _MenuItem(
+                      text    : 'News',
+                      isActive: navController.currentTab.value == 'News',
+                      onTap   : () {
+                        navController.changeTab('News');
+                      },
+                    )),
+                    const SizedBox(height: 28),
 
-            // ── Play now Tab ──────────────────────────────
-            Obx(() => _MenuItem(
-              text    : 'Play now',
-              isActive: navController.currentTab.value == 'Play now',
-              leftPad : 132.71,
-              onTap   : () {
-                navController.changeTab('Play now');
-              },
-            )),
-            const SizedBox(height: 60),
+                    // ── Store Tab ────────────────────────
+                    Obx(() => _MenuItem(
+                      text    : 'Store',
+                      isActive: navController.currentTab.value == 'Store',
+                      onTap   : () {
+                        navController.changeTab('Store');
+                        Navigator.of(context).pop();
+                        Navigator.of(
+                          context,
+                          rootNavigator: true,
+                        ).push(
+                          MaterialPageRoute(
+                            builder: (_) => const StoreScreen(),
+                          ),
+                        );
+                      },
+                    )),
+                    const SizedBox(height: 28),
 
-            // ── Joshua row ────────────────────────────
-            Padding(
-              padding: const EdgeInsets.only(left: 94),
-              child  : Row(
-                children: [
-                  Image.asset(
-                    AppImages.partnerjoshua,
-                    width : 44,
-                    height: 44,
-                    fit   : BoxFit.contain,
-                  ),
-                  const SizedBox(width: 20),
-                  SizedBox(
-                    width : 116.46,
-                    height: 25,
-                    child : Text(
-                      'JoshuaJTV',
-                      style: GoogleFonts.montserrat(
-                        fontSize     : 20.23,
-                        fontWeight   : FontWeight.w500,
-                        color        : const Color(0xFF4463BF),
-                        height       : 1.0,
-                        letterSpacing: 0,
-                      ),
+                    // ── Highscore Tab ────────────────────
+                    Obx(() => _MenuItem(
+                      text    : 'Highscore',
+                      isActive: navController.currentTab.value ==
+                          'Highscore',
+                      onTap   : () {
+                        navController.changeTab('Highscore');
+                      },
+                    )),
+                    const SizedBox(height: 28),
+
+                    // ── Play now Tab ──────────────────────
+                    Obx(() => _MenuItem(
+                      text    : 'Play now',
+                      isActive: navController.currentTab.value ==
+                          'Play now',
+                      onTap   : () {
+                        navController.changeTab('Play now');
+                      },
+                    )),
+                    const SizedBox(height: 28),
+
+                    // ── Logout Tab ────────────────────────
+                    _MenuItem(
+                      text    : 'Log out',
+                      isActive: false,
+                      onTap   : () {
+                        Navigator.of(context).pop();
+                        authController.logout();
+                      },
                     ),
-                  ),
-                ],
+
+                    const SizedBox(height: 56),
+
+                    // ── Joshua row — circular avatar ──────
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children         : [
+
+                        ClipOval(
+                          child: Image.asset(
+                            AppImages.partnerjoshua,
+                            width : 44,
+                            height: 44,
+                            fit   : BoxFit.cover,
+                          ),
+                        ),
+
+                        const SizedBox(width: 16),
+
+                        Text(
+                          'JoshuaJTV',
+                          style: GoogleFonts.montserrat(
+                            fontSize     : 20.23,
+                            fontWeight   : FontWeight.w500,
+                            color        : const Color(0xFF4463BF),
+                            height       : 1.0,
+                            letterSpacing: 0,
+                          ),
+                        ),
+
+                      ],
+                    ),
+
+                    const SizedBox(height: 32),
+
+                  ],
+                ),
               ),
             ),
+
           ],
         ),
       ),
@@ -257,35 +301,31 @@ class DrawerMenu extends StatelessWidget {
 
 // ── Menu Item ───────────────────────────────────────────
 class _MenuItem extends StatelessWidget {
-  final String    text;
-  final bool      isActive;
-  final double    leftPad;
-  final VoidCallback? onTap;
+  final String        text;
+  final bool           isActive;
+  final VoidCallback?  onTap;
 
   const _MenuItem({
     required this.text,
     required this.isActive,
-    required this.leftPad,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: leftPad),
-      child  : GestureDetector(
-        onTap: onTap ?? () => Navigator.of(context).pop(),
-        child: Text(
-          text,
-          style: GoogleFonts.montserrat(
-            fontSize     : 19.21,
-            fontWeight   : isActive ? FontWeight.w700 : FontWeight.w500,
-            color        : isActive
-                ? const Color(0xFF4463BF) 
-                : const Color(0xFFFFFFFF), 
-            height       : 1.0,
-            letterSpacing: 0,
-          ),
+    return GestureDetector(
+      onTap: onTap ?? () => Navigator.of(context).pop(),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style    : GoogleFonts.montserrat(
+          fontSize     : 19.21,
+          fontWeight   : isActive ? FontWeight.w700 : FontWeight.w500,
+          color        : isActive
+              ? const Color(0xFF4463BF)
+              : const Color(0xFFFFFFFF),
+          height       : 1.0,
+          letterSpacing: 0,
         ),
       ),
     );

@@ -22,6 +22,9 @@ class CartController extends GetxController {
 
   final RxList<CartItem> cartItems = <CartItem>[].obs;
 
+  // ── Track purchased tiers (after checkout completes) ───
+  final RxList<String> purchasedTiers = <String>[].obs;
+
   int get totalItemCount => cartItems.fold(
     0, (sum, item) => sum + item.quantity.value,
   );
@@ -29,6 +32,16 @@ class CartController extends GetxController {
   double get totalPrice => cartItems.fold(
     0.0, (sum, item) => sum + (item.price * item.quantity.value),
   );
+
+  // ── Most recently added tier (for membership card) ──────
+  CartItem? get latestTier =>
+      cartItems.isNotEmpty ? cartItems.last : null;
+
+  // ── Check if the latest tier has been purchased ─────────
+  bool get isLatestTierActive {
+    if (latestTier == null) return false;
+    return purchasedTiers.contains(latestTier!.imageName);
+  }
 
   void addToCart({
     required String imageName,
@@ -90,6 +103,14 @@ class CartController extends GetxController {
       cartItems[index].isFavourite.value =
           !cartItems[index].isFavourite.value;
       cartItems.refresh();
+    }
+  }
+
+  // ── Mark a tier as purchased (call this on successful checkout) ──
+  void markAsPurchased(String imageName) {
+    if (!purchasedTiers.contains(imageName)) {
+      purchasedTiers.add(imageName);
+      purchasedTiers.refresh();
     }
   }
 }

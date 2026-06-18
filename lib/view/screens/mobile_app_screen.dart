@@ -1,4 +1,5 @@
 import 'package:exous/view/widgets/sections/mobile_app/mobile_screen_footer_section.dart';
+import 'package:exous/view/widgets/sections/mobile_app/mobile_bottom_bar.dart';
 import 'package:exous/view/widgets/sections/newsletter_section.dart';
 import 'package:flutter/material.dart';
 import '../widgets/sections/navbar_widget.dart';
@@ -14,6 +15,10 @@ class MobileAppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF080818),
+
+      // ── Persistent bottom bar (stays fixed, doesn't scroll) ──
+      bottomNavigationBar: const MobileBottomBar(),
+
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         child  : Column(
@@ -34,10 +39,10 @@ class MobileAppScreen extends StatelessWidget {
             // ── 5. Tier cards section ──────────────────
             const MobileTierSection(),
 
-            // ---6. Newslette sections -------------------
+            // ── 6. Newsletter section ───────────────────
             const NewsletterSection(),
 
-            // ---6. fotter  sections -------------------
+            // ── 7. Footer section ────────────────────────
             const MobileScreenFooterSection(),
 
           ],

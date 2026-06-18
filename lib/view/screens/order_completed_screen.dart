@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import '../widgets/sections/navbar_widget.dart';
-import 'home_screen.dart'; 
+import 'home_screen.dart';
+import '../../controllers/cart_controller.dart'; // ← added
 
 class OrderCompletedScreen extends StatelessWidget {
   final List upgradedItems;
@@ -27,9 +28,9 @@ class OrderCompletedScreen extends StatelessWidget {
     if (item['imageName'] != null && item['imageName'].toString().isNotEmpty) {
       return item['imageName'];
     }
-    
+
     final String title = (item['title'] ?? '').toString().toLowerCase();
-    
+
     if (title.contains('tier 1')) {
       return 'assets/images/tier1.png';
     } else if (title.contains('tier 2')) {
@@ -39,12 +40,29 @@ class OrderCompletedScreen extends StatelessWidget {
     } else if (title.contains('tier 4')) {
       return 'assets/images/tier4.png';
     }
-    
-    return 'assets/images/tier4.png'; 
+
+    return 'assets/images/tier4.png';
+  }
+
+  // ── Mark every purchased item as ACTIVE in CartController ──
+  void _markItemsAsPurchased() {
+    final cartController = Get.find<CartController>();
+
+    for (final item in upgradedItems) {
+      final imageName = _getAssetImage(item as Map);
+      cartController.markAsPurchased(imageName);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    // ── Run once, right after this screen finishes its first frame ──
+    // Using addPostFrameCallback instead of calling it directly in
+    // build() avoids triggering Obx/GetX rebuild issues mid-build.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _markItemsAsPurchased();
+    });
+
     return Scaffold(
       backgroundColor: const Color(0xFF080818),
       body: SafeArea(
@@ -79,8 +97,8 @@ class OrderCompletedScreen extends StatelessWidget {
                               Text(
                                 'Back to shop',
                                 style: GoogleFonts.montserrat(
-                                  fontSize: 13.78, 
-                                  fontWeight: FontWeight.w600, 
+                                  fontSize: 13.78,
+                                  fontWeight: FontWeight.w600,
                                   color: const Color(0xFF4463BF),
                                 ),
                               ),
@@ -97,9 +115,9 @@ class OrderCompletedScreen extends StatelessWidget {
                       'Congratulations! your order\nis completed',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.montserrat(
-                        fontSize: 19.29, 
-                        fontWeight: FontWeight.w600, 
-                        color: const Color(0xFF6D88DB), 
+                        fontSize: 19.29,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF6D88DB),
                         height: 1.3,
                       ),
                     ),
@@ -120,13 +138,13 @@ class OrderCompletedScreen extends StatelessWidget {
                           margin: const EdgeInsets.only(bottom: 16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: const Color(0xFF110B22), 
+                            color: const Color(0xFF110B22),
                             border: Border.all(color: const Color(0xFF23143A), width: 1),
                           ),
                           child: Row(
                             children: [
                               const SizedBox(width: 16),
-                              
+
                               // Dynamically Selected Image Container
                               Container(
                                 width: 76,
@@ -134,7 +152,7 @@ class OrderCompletedScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF180A2B),
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: const Color(0xFFFFB300), width: 1), 
+                                  border: Border.all(color: const Color(0xFFFFB300), width: 1),
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(7),
@@ -185,7 +203,7 @@ class OrderCompletedScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF0B0B16), 
+                        color: const Color(0xFF0B0B16),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: const Color(0xFF1C1C30), width: 1),
                       ),
@@ -200,7 +218,7 @@ class OrderCompletedScreen extends StatelessWidget {
                           const Divider(color: Color(0xFF18182B), height: 24, thickness: 1),
                           _buildDetailsRow('Order number', orderIdNumber),
                           const Divider(color: Color(0xFF18182B), height: 24, thickness: 1),
-                          
+
                           // Hash link summary layout - Handled safely with Expanded
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,9 +234,9 @@ class OrderCompletedScreen extends StatelessWidget {
                                   txHashUrl,
                                   textAlign: TextAlign.end,
                                   style: GoogleFonts.poppins(
-                                    fontSize: 10, 
-                                    fontWeight: FontWeight.w400, 
-                                    color: const Color(0xFF4463BF), 
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    color: const Color(0xFF4463BF),
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
@@ -243,13 +261,13 @@ class OrderCompletedScreen extends StatelessWidget {
   Widget _buildDetailsRow(String label, String data) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start, // Handles clean top alignment if wrapped
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
           style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white70),
         ),
-        const SizedBox(width: 24), // Ensures safe baseline content separation gap
+        const SizedBox(width: 24),
         Expanded(
           child: Text(
             data,

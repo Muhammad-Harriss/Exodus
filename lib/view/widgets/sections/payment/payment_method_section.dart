@@ -1,3 +1,4 @@
+import 'package:exous/view/screens/wallet_pay_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
@@ -18,12 +19,13 @@ class PaymentMethodSection extends StatelessWidget {
         children: [
 
           // ── Payment method card ───────────────────────
+          // height increased to fit third button: 277 → 362
           Positioned(
             top : 184,
             left: 32.61,
             child: Container(
               width : 309.42,
-              height: 277,
+              height: 362,
               decoration: BoxDecoration(
                 color       : const Color(0xFF0F0F1E),
                 borderRadius: BorderRadius.circular(16),
@@ -58,6 +60,7 @@ class PaymentMethodSection extends StatelessWidget {
                   ),
 
                   // ── Pay with card button ────────────
+                  // top: 66.96, left: 40.18
                   Positioned(
                     top : 66.96,
                     left: 40.18,
@@ -71,6 +74,7 @@ class PaymentMethodSection extends StatelessWidget {
                   ),
 
                   // ── Pay with crypto button ──────────
+                  // top: 151.76, left: 40.18
                   Positioned(
                     top : 151.76,
                     left: 40.18,
@@ -79,6 +83,21 @@ class PaymentMethodSection extends StatelessWidget {
                       label: 'Pay with crypto',
                       onTap: () {
                         Get.to(() => const BillingScreen());
+                      },
+                    ),
+                  ),
+
+                  // ── Proceed to wallet pay button ────
+                  // same spacing pattern: 151.76 - 66.96 = 84.8 gap
+                  // top: 151.76 + 84.8 = 236.56, left: 40.18
+                  Positioned(
+                    top : 236.56,
+                    left: 40.18,
+                    child: _PaymentButton(
+                      icon : Icons.account_balance_wallet_rounded,
+                      label: 'Proceed to walletpay',
+                      onTap: () {
+                        Get.to(() => const WalletPayScreen());
                       },
                     ),
                   ),

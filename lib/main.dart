@@ -1,13 +1,16 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:exous/controllers/navigation_controller.dart';
+import 'package:exous/controllers/auth_controller.dart';
 import 'package:exous/view/screens/home_screen.dart';
+import 'package:exous/view/screens/login_screen.dart';
+import 'package:exous/view/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/services.dart';
-import 'package:exous/controllers/cart_controller.dart'; 
+import 'package:exous/controllers/cart_controller.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'; // Added Supabase Import
 
 void main() async { // Converted to async
@@ -28,7 +31,8 @@ void main() async { // Converted to async
 
   // ── Initialize Controllers globally ────────────────
   Get.put(CartController());
-  Get.put(NavigationController()); 
+  Get.put(NavigationController());
+  Get.put(AuthController()); // ← added
 
   runApp(
     DevicePreview(
@@ -43,6 +47,9 @@ class ExodusApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ── Check if user already has an active Supabase session ──
+    final authController = Get.find<AuthController>();
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       useInheritedMediaQuery: true,
@@ -52,7 +59,14 @@ class ExodusApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFF080818),
         brightness: Brightness.dark,
       ),
-      home: const HomeScreen(),
+
+      // ── Route to Home if already logged in, otherwise Login ──
+      initialRoute: authController.isLoggedIn ? '/home' : '/login',
+      getPages: [
+        GetPage(name: '/login', page: () => const LoginScreen()),
+        GetPage(name: '/signup', page: () => const SignupScreen()),
+        GetPage(name: '/home', page: () => const HomeScreen()),
+      ],
     );
   }
 }
