@@ -1,12 +1,16 @@
+// ignore_for_file: unnecessary_underscores, deprecated_member_use
+
 import 'package:exous/controllers/navigation_controller.dart';
 import 'package:exous/controllers/auth_controller.dart';
 import 'package:exous/core/constants/app_images.dart';
+import 'package:exous/view/screens/high_score_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../screens/mobile_app_screen.dart';
 import '../../screens/store_screen.dart';
 import '../../screens/home_screen.dart';
+
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({super.key});
@@ -112,7 +116,7 @@ class DrawerMenu extends StatelessWidget {
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children         : [
+                          children          : [
                             _Line(width: double.infinity),
                             _Line(width: double.infinity),
                             _Line(width: 14),
@@ -155,8 +159,7 @@ class DrawerMenu extends StatelessWidget {
                     // ── Mobile app Tab ──────────────────
                     Obx(() => _MenuItem(
                       text    : 'Mobile app',
-                      isActive: navController.currentTab.value ==
-                          'Mobile app',
+                      isActive: navController.currentTab.value == 'Mobile app',
                       onTap   : () {
                         navController.changeTab('Mobile app');
                         Navigator.of(context).pop();
@@ -224,10 +227,18 @@ class DrawerMenu extends StatelessWidget {
                     // ── Highscore Tab ────────────────────
                     Obx(() => _MenuItem(
                       text    : 'Highscore',
-                      isActive: navController.currentTab.value ==
-                          'Highscore',
+                      isActive: navController.currentTab.value == 'Highscore',
                       onTap   : () {
                         navController.changeTab('Highscore');
+                        Navigator.of(context).pop(); // Closes the overlay panel smoothly before jumping
+                        Navigator.of(
+                          context,
+                          rootNavigator: true,
+                        ).push(
+                          MaterialPageRoute(
+                            builder: (_) => const HighscoreScreen(),
+                          ),
+                        );
                       },
                     )),
                     const SizedBox(height: 28),
@@ -235,8 +246,7 @@ class DrawerMenu extends StatelessWidget {
                     // ── Play now Tab ──────────────────────
                     Obx(() => _MenuItem(
                       text    : 'Play now',
-                      isActive: navController.currentTab.value ==
-                          'Play now',
+                      isActive: navController.currentTab.value == 'Play now',
                       onTap   : () {
                         navController.changeTab('Play now');
                       },

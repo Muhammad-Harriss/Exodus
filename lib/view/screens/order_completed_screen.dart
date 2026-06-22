@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import '../widgets/sections/navbar_widget.dart';
 import 'home_screen.dart';
-import '../../controllers/cart_controller.dart'; // ← added
+import '../../controllers/cart_controller.dart';
 
 class OrderCompletedScreen extends StatelessWidget {
   final List upgradedItems;
@@ -49,16 +49,28 @@ class OrderCompletedScreen extends StatelessWidget {
     final cartController = Get.find<CartController>();
 
     for (final item in upgradedItems) {
-      final imageName = _getAssetImage(item as Map);
-      cartController.markAsPurchased(imageName);
+      final map = item as Map;
+      
+      // Look up if a clean title exists in the map payload
+      final String rawTitle = (map['title'] ?? '').toString();
+      
+      String identificationKey;
+
+      if (rawTitle.isNotEmpty) {
+        // If we have a clean title, pass it directly so the controller matches it or cleans it safely
+        identificationKey = rawTitle;
+      } else {
+        // Fallback to asset name lookup if no title exists
+        identificationKey = _getAssetImage(map);
+      }
+
+      cartController.markAsPurchased(identificationKey);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // ── Run once, right after this screen finishes its first frame ──
-    // Using addPostFrameCallback instead of calling it directly in
-    // build() avoids triggering Obx/GetX rebuild issues mid-build.
+    // Run once safely right after this screen finishes its first frame layout lifecycle
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _markItemsAsPurchased();
     });
@@ -219,7 +231,7 @@ class OrderCompletedScreen extends StatelessWidget {
                           _buildDetailsRow('Order number', orderIdNumber),
                           const Divider(color: Color(0xFF18182B), height: 24, thickness: 1),
 
-                          // Hash link summary layout - Handled safely with Expanded
+                          // Hash link summary layout
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,7 +269,6 @@ class OrderCompletedScreen extends StatelessWidget {
     );
   }
 
-  /// Updated layout builder constructor row logic to eliminate flex constraints errors
   Widget _buildDetailsRow(String label, String data) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

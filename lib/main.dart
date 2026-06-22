@@ -11,9 +11,9 @@ import 'package:get/get.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/services.dart';
 import 'package:exous/controllers/cart_controller.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'; // Added Supabase Import
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() async { // Converted to async
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // ── Initialize Supabase Database Connection ────────
@@ -32,7 +32,7 @@ void main() async { // Converted to async
   // ── Initialize Controllers globally ────────────────
   Get.put(CartController());
   Get.put(NavigationController());
-  Get.put(AuthController()); // ← added
+  Get.put(AuthController());
 
   runApp(
     DevicePreview(
@@ -47,7 +47,6 @@ class ExodusApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ── Check if user already has an active Supabase session ──
     final authController = Get.find<AuthController>();
 
     return GetMaterialApp(
@@ -60,8 +59,9 @@ class ExodusApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
 
-      // ── Route to Home if already logged in, otherwise Login ──
-      initialRoute: authController.isLoggedIn ? '/home' : '/login',
+      // ── Clean layout selection without Obx crashing the build engine ──
+      home: authController.isLoggedIn ? const HomeScreen() : const LoginScreen(),
+
       getPages: [
         GetPage(name: '/login', page: () => const LoginScreen()),
         GetPage(name: '/signup', page: () => const SignupScreen()),

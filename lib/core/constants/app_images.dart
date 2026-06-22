@@ -23,6 +23,8 @@ class AppImages {
 
   // ── Sections ──────────────────────────────────────────
   static const String dus  = '$_base/dus.png';
+  static const String blackcoin  = '$_base/blackcoin.png';
+static const String coin  = '$_base/coin.png';
   static const String dawn  = '$_base/dawn.png';
   static const String dawn1  = '$_base/dawn1.png';
   static const String dawn2  = '$_base/dawn2.png';
