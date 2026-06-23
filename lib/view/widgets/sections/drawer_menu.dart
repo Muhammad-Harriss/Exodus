@@ -4,6 +4,7 @@ import 'package:exous/controllers/navigation_controller.dart';
 import 'package:exous/controllers/auth_controller.dart';
 import 'package:exous/core/constants/app_images.dart';
 import 'package:exous/view/screens/high_score_screen.dart';
+import 'package:exous/view/screens/wallet_pay_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -201,6 +202,16 @@ class DrawerMenu extends StatelessWidget {
                       isActive: navController.currentTab.value == 'News',
                       onTap   : () {
                         navController.changeTab('News');
+                        Navigator.of(context).pop();
+                        Navigator.of(
+                          context,
+                          rootNavigator: true,
+                        ).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (_) => const WalletPayScreen(),
+                          ),
+                          (route) => false,
+                        );
                       },
                     )),
                     const SizedBox(height: 28),

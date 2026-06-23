@@ -21,7 +21,7 @@ class HeroSection extends StatelessWidget {
           // Centers the cave opening on mobile
           Positioned(
             top : 0,
-            left: -(1435 - screenWidth) / 2 - 150,
+            left: -(1435 - screenWidth) / 2 - 50,
             child: Image.asset(
               AppImages.heroBg,
               width : 1435,
@@ -55,7 +55,7 @@ class HeroSection extends StatelessWidget {
           // top: 252 - 78 = 174, left: 4
           Positioned(
             top : 174,
-            left: 4,
+            left: 10.5,
             child: Image.asset(
               AppImages.exodusHeroLogo,
               width : 353,

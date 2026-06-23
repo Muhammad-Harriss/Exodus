@@ -24,7 +24,13 @@ class AppImages {
   // ── Sections ──────────────────────────────────────────
   static const String dus  = '$_base/dus.png';
   static const String blackcoin  = '$_base/blackcoin.png';
-static const String coin  = '$_base/coin.png';
+  static const String coin  = '$_base/coin.png';
+  static const String coinCooking = '$_base/coin_cooking.png';
+  static const String coinFishing = '$_base/coin_fishing.png';
+  static const String coinForging = '$_base/coin_forging.png';
+  static const String coinMinig = '$_base/coin_minig.png';
+  static const String coinWoodChopping  = '$_base/coin_woodchopping.png';
+  static const String coinWorkshop = '$_base/coin_workshop.png';
   static const String dawn  = '$_base/dawn.png';
   static const String dawn1  = '$_base/dawn1.png';
   static const String dawn2  = '$_base/dawn2.png';
